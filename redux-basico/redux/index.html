@@ -4,22 +4,54 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redux</title>
+  <title>Redux - aula Action</title>
   <script src="./redux.min.js"></script>
 </head>
 
 <body>
+
+  <button id="button"> Incrementar </button>
   <script>
-    const initialState = {
-      nome: 'André',
-      id: 199
+    //constantes
+    const INCREMENTAR = 'INCREMENTAR';
+    const SOMAR = 'SOMAR';
+    const initialState = 10;
+
+    // Action Creators.
+    function incrementar() {
+      return { type: INCREMENTAR }
     }
+
+    function somar(payload) {
+      return { type: SOMAR, payload }
+    }
+
     function reducer(state = initialState, action) {
-      return state
+      if (action.type === INCREMENTAR) {
+        return state + 1;
+      }
+      if (action.type === SOMAR) {
+        return state + action.payload;
+      } else {
+        return state;
+      }
     }
     const store = Redux.createStore(reducer);
-    const state = store.getState();
+    let state = store.getState();
     console.log(state);
+
+    store.dispatch(somar(25));
+    state = store.getState();
+    console.log(state);
+
+    store.dispatch(somar(25));
+    store.dispatch(incrementar());
+    state = store.getState();
+    console.log(state);
+
+    const button = document.querySelector('#button')
+    button.addEventListener('click', () => store.dispatch(incrementar()))
+
   </script>
 </body>
 
