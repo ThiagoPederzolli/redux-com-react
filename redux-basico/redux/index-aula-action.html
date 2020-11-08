@@ -4,12 +4,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redux - aula Subscribe</title>
+  <title>Redux - aula Action</title>
   <script src="./redux.min.js"></script>
 </head>
 
 <body>
-  <h1>Total: <span id="total"></span></h1>
+
   <button id="button"> Incrementar </button>
   <script>
     //constantes
@@ -38,16 +38,17 @@
     }
     const store = Redux.createStore(reducer);
     let state = store.getState();
+    console.log(state);
 
-    function render() {
-      state = store.getState();
-      const total = document.querySelector('#total');
-      total.innerText = state;
-    }
-    render()
+    store.dispatch(somar(25));
+    state = store.getState();
+    console.log(state);
 
-    const unsubscribe = store.subscribe(render);
-    unsubscribe();
+    store.dispatch(somar(25));
+    store.dispatch(incrementar());
+    state = store.getState();
+    console.log(state);
+
     const button = document.querySelector('#button')
     button.addEventListener('click', () => store.dispatch(incrementar()))
 
