@@ -4,7 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redux - aula Imutabilidade</title>
+  <title>Redux - aula Imutabilidade com Immer</title>
+  <script src="./immer.umd.production.min.js"></script>
+
   <script src="./redux.min.js"></script>
 </head>
 
@@ -14,74 +16,70 @@
     // const array1 = [0, 1, 2, 3, 4]
     // const array2 = array1;
     // const array3 = [...array1];
-
     // console.log(array2 === array1);
     // console.log(array2 === array3);
     // console.log(array1);
     // console.log(array2);
     // console.log(array3);
-
-    const array1 = [0, 1, 2, 3, 4]
-    const array2 = array1.filter(item => item > 2);
-    const array3 = [...array1];
-
+    // const array1 = [0, 1, 2, 3, 4]
+    // const array2 = array1.filter(item => item > 2);
+    // const array3 = [...array1];
     // console.log(array2 === array1);
     // console.log(array2 === array3);
     // console.log(array1);
     // console.log(array2);
-    // console.log(array3);
+    // console.log(array3); 
+    // const obj2 = obj1;
+    // obj2.nome = 'Pedro'
+    // const obj3 = { ...obj1 };
+    // obj3.nome = 'Silva'
+    // const obj4 = Object.assign({}, obj1, { nome: 'Thiago' });
+    // console.log(obj2 === obj1);
+    // console.log(obj2 === obj3);
+    // console.log(obj2 === obj4);
+    // console.log(obj1);
+    // console.log(obj2);
+    // console.log(obj3);
+    // console.log(obj4);
 
     const obj1 = {
       nome: 'André',
       idade: 31,
     };
-    const obj2 = obj1;
-    obj2.nome = 'Pedro'
-    const obj3 = { ...obj1 };
-    obj3.nome = 'Silva'
-    const obj4 = Object.assign({}, obj1, { nome: 'Thiago' });
 
-    console.log(obj2 === obj1);
-    console.log(obj2 === obj3);
-    console.log(obj2 === obj4);
-    console.log(obj1);
-    console.log(obj2);
-    console.log(obj3);
-    console.log(obj4);
+    const obj2 = immer.produce(obj1, (draft) => {
+      draft.idade = 35
+    });
 
+    // NÃO FUNCIONA PORQUE ALTERA O OBJETO ORIGINAL.
+    //O Immer funciona porque ele tem uma lógica por baixo dos panos que irá primeiro criar uma cópia do objeto passado como argumento.
+    function mudarIdade(obj, idade) {
+      obj.idade = idade;
+      return obj;
+    }
 
+    const obj3 = mudarIdade(obj1, 23);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // console.log(obj1);
+    // console.log(obj2);
+    // console.log(obj3);
 
     const initialState = {
       nome: 'André',
       idade: 31,
     };
-    function reducer(state = initialState, action) {
+    const reducer = immer.produce((state, action) => {
       switch (action.type) {
         case 'MODIFICAR_NOME':
           //FORMA ERRADA:
-          // state.nome = action.payload
-          // return state;
-          //FORMA CORRETA:
-          return { ...state, nome: action.payload };
+          state.nome = action.payload
+          return state;
+        //FORMA CORRETA:
+        // return { ...state, nome: action.payload };
         default:
           return state;
       }
-    }
+    }, initialState)
 
     const store = Redux.createStore(
       reducer,
