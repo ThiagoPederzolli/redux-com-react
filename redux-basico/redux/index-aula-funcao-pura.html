@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redux - aula Função Pura</title>
+  <script src="./redux.min.js"></script>
+</head>
+
+<body>
+  <div id="caixa" style="background: blue; height: 50px;"></div>
+  <script>
+    // FORMA INCORRETA DE SE FAZER PORQUE O REDUCER ESTÁ MANIPULANDO O DOM
+    // function reducer(state = 0, action) {
+    //   switch (action.type) {
+    //     case 'MODIFICAR_WIDTH':
+    //       const caixa = document.querySelector('#caixa');
+    //       caixa.style.width = action.payload + 'px';
+    //       return action.payload;
+    //     default:
+    //       return state;
+    //   }
+    // }
+
+
+    // FORMA CORRETA PORQUE O REDUCER SE PREOCUPA APENAS EM MUDAR O ESTADO E A MANIPULAÇÃO DO DOM FICA POR CONTA DA FUNÇÃO RENDER
+    function reducer(state = 0, action) {
+      switch (action.type) {
+        case 'MODIFICAR_WIDTH':
+          return action.payload;
+        default:
+          return state;
+      }
+    }
+
+    const store = Redux.createStore(
+      reducer,
+      window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    );
+
+    function render() {
+      const caixa = document.querySelector('#caixa');
+      caixa.style.width = store.getState() + 'px';
+    }
+    store.subscribe(render)
+
+    store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 100 });
+    store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 20 });
+    store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 30 });
+    store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 200 });
+
+    console.log(store.getState());
+  </script>
+</body>
+
+</html>

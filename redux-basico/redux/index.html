@@ -4,31 +4,80 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redux - aula Função Pura</title>
+  <title>Redux - aula Imutabilidade</title>
   <script src="./redux.min.js"></script>
 </head>
 
 <body>
-  <div id="caixa" style="background: blue; height: 50px;"></div>
+  <!-- <div id="caixa" style="background: blue; height: 50px;"></div> -->
   <script>
-    // FORMA INCORRETA DE SE FAZER PORQUE O REDUCER ESTÁ MANIPULANDO O DOM
-    // function reducer(state = 0, action) {
-    //   switch (action.type) {
-    //     case 'MODIFICAR_WIDTH':
-    //       const caixa = document.querySelector('#caixa');
-    //       caixa.style.width = action.payload + 'px';
-    //       return action.payload;
-    //     default:
-    //       return state;
-    //   }
-    // }
+    // const array1 = [0, 1, 2, 3, 4]
+    // const array2 = array1;
+    // const array3 = [...array1];
+
+    // console.log(array2 === array1);
+    // console.log(array2 === array3);
+    // console.log(array1);
+    // console.log(array2);
+    // console.log(array3);
+
+    const array1 = [0, 1, 2, 3, 4]
+    const array2 = array1.filter(item => item > 2);
+    const array3 = [...array1];
+
+    // console.log(array2 === array1);
+    // console.log(array2 === array3);
+    // console.log(array1);
+    // console.log(array2);
+    // console.log(array3);
+
+    const obj1 = {
+      nome: 'André',
+      idade: 31,
+    };
+    const obj2 = obj1;
+    obj2.nome = 'Pedro'
+    const obj3 = { ...obj1 };
+    obj3.nome = 'Silva'
+    const obj4 = Object.assign({}, obj1, { nome: 'Thiago' });
+
+    console.log(obj2 === obj1);
+    console.log(obj2 === obj3);
+    console.log(obj2 === obj4);
+    console.log(obj1);
+    console.log(obj2);
+    console.log(obj3);
+    console.log(obj4);
 
 
-    // FORMA CORRETA PORQUE O REDUCER SE PREOCUPA APENAS EM MUDAR O ESTADO E A MANIPULAÇÃO DO DOM FICA POR CONTA DA FUNÇÃO RENDER
-    function reducer(state = 0, action) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const initialState = {
+      nome: 'André',
+      idade: 31,
+    };
+    function reducer(state = initialState, action) {
       switch (action.type) {
-        case 'MODIFICAR_WIDTH':
-          return action.payload;
+        case 'MODIFICAR_NOME':
+          //FORMA ERRADA:
+          // state.nome = action.payload
+          // return state;
+          //FORMA CORRETA:
+          return { ...state, nome: action.payload };
         default:
           return state;
       }
@@ -39,18 +88,9 @@
       window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
     );
 
-    function render() {
-      const caixa = document.querySelector('#caixa');
-      caixa.style.width = store.getState() + 'px';
-    }
-    store.subscribe(render)
-
-    store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 100 });
-    store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 20 });
-    store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 30 });
-    store.dispatch({ type: 'MODIFICAR_WIDTH', payload: 200 });
-
-    console.log(store.getState());
+    store.dispatch({ type: 'MODIFICAR_NOME', payload: 'Mario' })
+    store.dispatch({ type: 'MODIFICAR_NOME', payload: 'Paulo' })
+    store.dispatch({ type: 'MODIFICAR_NOME', payload: 'Carlos' })
   </script>
 </body>
 
