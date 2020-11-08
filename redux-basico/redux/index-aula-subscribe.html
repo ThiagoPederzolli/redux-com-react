@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Redux - aula Subscribe</title>
+  <script src="./redux.min.js"></script>
+</head>
+
+<body>
+  <h1>Total: <span id="total"></span></h1>
+  <button id="button"> Incrementar </button>
+  <script>
+    //constantes
+    const INCREMENTAR = 'INCREMENTAR';
+    const SOMAR = 'SOMAR';
+    const initialState = 10;
+
+    // Action Creators.
+    function incrementar() {
+      return { type: INCREMENTAR }
+    }
+
+    function somar(payload) {
+      return { type: SOMAR, payload }
+    }
+
+    function reducer(state = initialState, action) {
+      if (action.type === INCREMENTAR) {
+        return state + 1;
+      }
+      if (action.type === SOMAR) {
+        return state + action.payload;
+      } else {
+        return state;
+      }
+    }
+    const store = Redux.createStore(reducer);
+    let state = store.getState();
+
+    function render() {
+      state = store.getState();
+      const total = document.querySelector('#total');
+      total.innerText = state;
+    }
+    render()
+
+    const unsubscribe = store.subscribe(render);
+    unsubscribe();
+    const button = document.querySelector('#button')
+    button.addEventListener('click', () => store.dispatch(incrementar()))
+
+  </script>
+</body>
+
+</html>

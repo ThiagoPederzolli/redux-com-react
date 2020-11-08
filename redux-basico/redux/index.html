@@ -4,18 +4,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Redux - aula Subscribe</title>
+  <title>Redux - aula Reducer</title>
   <script src="./redux.min.js"></script>
 </head>
 
 <body>
   <h1>Total: <span id="total"></span></h1>
   <button id="button"> Incrementar </button>
+  <button id="abrir"> Abrir </button>
+  <button id="fechar"> Fechar </button>
   <script>
     //constantes
     const INCREMENTAR = 'INCREMENTAR';
     const SOMAR = 'SOMAR';
-    const initialState = 10;
+    const initialState = 0;
 
     // Action Creators.
     function incrementar() {
@@ -26,31 +28,50 @@
       return { type: SOMAR, payload }
     }
 
-    function reducer(state = initialState, action) {
-      if (action.type === INCREMENTAR) {
-        return state + 1;
-      }
-      if (action.type === SOMAR) {
-        return state + action.payload;
-      } else {
-        return state;
+    function contador(state = initialState, action) {
+      switch (action.type) {
+        case INCREMENTAR:
+          return state + 1
+        case SOMAR:
+          return state + action.payload
+        default:
+          return state
       }
     }
+
+    function modal(state = false, action) {
+      switch (action.type) {
+        case 'ABRIR':
+          return true
+        case 'FECHAR':
+          return false
+        default:
+          return state
+      }
+    }
+
+    const reducer = Redux.combineReducers({ contador, modal })
     const store = Redux.createStore(reducer);
     let state = store.getState();
 
     function render() {
-      state = store.getState();
+      const { contador, modal } = store.getState();
       const total = document.querySelector('#total');
-      total.innerText = state;
+      total.innerText = contador;
+      if (modal) { total.style.display = 'inline-block' } else {
+        total.style.display = 'none'
+      }
     }
     render()
 
-    const unsubscribe = store.subscribe(render);
-    unsubscribe();
-    const button = document.querySelector('#button')
-    button.addEventListener('click', () => store.dispatch(incrementar()))
+    store.subscribe(render);
 
+    const button = document.querySelector('#button')
+    const buttonAbrir = document.querySelector('#abrir')
+    const buttonFechar = document.querySelector('#fechar')
+    button.addEventListener('click', () => store.dispatch(incrementar()))
+    buttonAbrir.addEventListener('click', () => store.dispatch({ type: 'ABRIR' }))
+    buttonFechar.addEventListener('click', () => store.dispatch({ type: 'FECHAR' }))
   </script>
 </body>
 
