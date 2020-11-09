@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { login } from './store/login';
 
 function App() {
@@ -7,7 +7,7 @@ function App() {
   const [password, setPassword] = React.useState('');
 
   const dispatch = useDispatch();
-  const { data } = useSelector(state => state.login.user);
+  // const { data } = useSelector(state => state.login.user);
 
   function handleSubmit(event) {
     event.preventDefault();
@@ -35,7 +35,7 @@ function App() {
           onChange={({ target }) => setPassword(target.value)}
         />
         <button>Enviar</button>
-        <p>{data?.email}</p>
+        {/* <p>{data?.email}</p> */}
       </form>
     </div>
   );
