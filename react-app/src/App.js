@@ -1,6 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { login } from './store/login';
+import { somar } from './store/contador';
 
 function App() {
   const [username, setUsername] = React.useState('');
@@ -37,6 +38,7 @@ function App() {
         <button>Enviar</button>
         {/* <p>{data?.email}</p> */}
       </form>
+      <button onClick={() => dispatch(somar(5))}>Somar</button>
     </div>
   );
 }
