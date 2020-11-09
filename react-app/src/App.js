@@ -1,15 +1,19 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { login } from './store/login';
-import { somar } from './store/contador';
+import { useDispatch, useSelector } from 'react-redux';
+import { login, autoLogin } from './store/login';
+// import { somar } from './store/contador';
 
 function App() {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
-
   const dispatch = useDispatch();
-  // const { data } = useSelector(state => state.login.user);
 
+  React.useEffect(() => {
+    dispatch(autoLogin());
+  }, [dispatch]);
+
+  const { data } = useSelector(state => state.login.user);
+  // console.log(data);
   function handleSubmit(event) {
     event.preventDefault();
     dispatch(login({ username, password }));
@@ -36,9 +40,8 @@ function App() {
           onChange={({ target }) => setPassword(target.value)}
         />
         <button>Enviar</button>
-        {/* <p>{data?.email}</p> */}
+        <p>{data?.email}</p>
       </form>
-      <button onClick={() => dispatch(somar(5))}>Somar</button>
     </div>
   );
 }
