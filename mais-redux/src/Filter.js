@@ -1,14 +1,30 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
-const selectUniqueColors = ({ products }) =>
-  Array.from(new Set(products.data.map(({ color }) => color)));
+import { useDispatch, useSelector } from 'react-redux';
+import { changeFilters, selectUniqueColors } from './store/products';
 
 const Filter = () => {
-  // const colors = ['azul', 'rosa', 'preta'];
   const [minPrice, setMinPrice] = React.useState('');
   const [maxPrice, setMaxPrice] = React.useState('');
   const [selectedColors, setselectedColors] = React.useState([]);
   const colors = useSelector(selectUniqueColors);
+
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(changeFilters({ name: 'colors', value: selectedColors }));
+  }, [selectedColors, dispatch]);
+
+  React.useEffect(() => {
+    dispatch(
+      changeFilters({
+        name: 'prices',
+        value: {
+          min: Number(minPrice),
+          max: Number(maxPrice),
+        },
+      }),
+    );
+  }, [minPrice, maxPrice, dispatch]);
+
   function handleChange({ target }) {
     if (target.checked) {
       setselectedColors([...selectedColors, target.value]);
