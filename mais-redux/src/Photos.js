@@ -1,10 +1,10 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchPhotos } from './store/photos';
+import { fetchPhotos, getOverFiveKg } from './store/photos';
 
 const Photos = () => {
   const dispatch = useDispatch();
-  const { data } = useSelector(state => state.photos);
+  const data = useSelector(getOverFiveKg);
 
   React.useEffect(() => {
     dispatch(fetchPhotos());
@@ -17,7 +17,7 @@ const Photos = () => {
         {data.map(photo => (
           <li key={photo.id}>
             {/* <img src={photo.src} alt={photo.title}/> */}
-            {photo.title}
+            {photo.title} | {photo.peso} pounds
           </li>
         ))}
       </ul>
