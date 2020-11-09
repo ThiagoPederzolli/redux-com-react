@@ -5,10 +5,11 @@ import {
 } from '@reduxjs/toolkit';
 import contador from './contador';
 import modal from './modal';
-import logger from './middleware/logger';
+import login from './login';
+// import logger from './middleware/logger';logger
 
-const middleware = [...getDefaultMiddleware(), logger];
-const reducer = combineReducers({ contador, modal });
+const middleware = [...getDefaultMiddleware()];
+const reducer = combineReducers({ contador, modal, login });
 
 const store = configureStore({ reducer, middleware });
 export default store;
