@@ -1,14 +1,7 @@
 import React from 'react';
-import Photos from './Photos';
 
 function App() {
-  const [toggle, setToggle] = React.useState(true);
-  return (
-    <div>
-      <button onClick={() => setToggle(!toggle)}>Toggle</button>
-      {toggle && <Photos />}
-    </div>
-  );
+  return <div>Olá!</div>;
 }
 
 export default App;
