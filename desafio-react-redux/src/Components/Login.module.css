@@ -1,0 +1,30 @@
+.label,
+.input,
+.button {
+  font-family: Roboto, sans-serif;
+  font-size: 1rem;
+}
+
+.label {
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+.input {
+  border: 1px solid;
+  border-radius: 3px;
+  box-sizing: border-box;
+  margin-bottom: 0.5rem;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.button {
+  background-color: black;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  padding: 0.7rem 2rem;
+}
