@@ -1,10 +1,23 @@
 import React from 'react';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { userLogout } from '../store/login';
+import styles from './Header.module.css';
 const Header = () => {
+  const { user, token } = useSelector(state => state.login);
+  const loading = user.loading || token.loading;
+  const dispatch = useDispatch();
   return (
-    <div>
-      <h1>Mini Dogs</h1>
-    </div>
+    <header className={styles.header}>
+      <h1 className={styles.title}>Mini Dogs</h1>
+      <button
+        aria-label="Logout"
+        className={`${styles.login} 
+        ${loading ? styles.loading : ''}
+        ${user.data ? styles.loaded : ''}
+        `}
+        onClick={() => dispatch(userLogout())}
+      ></button>
+    </header>
   );
 };
 
