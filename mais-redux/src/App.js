@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { adicionarDatas } from './store/date';
 function App() {
+  const [partida, setPartida] = React.useState('');
+  const [retorno, setRetorno] = React.useState('');
+  const dispatch = useDispatch();
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    dispatch(adicionarDatas({ partida, retorno }));
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <p>
+        <label htmlFor="partida">Partida</label>
+        <input
+          type="date"
+          id="partida"
+          value={partida}
+          onChange={({ target }) => setPartida(target.value)}
+        />
+      </p>
+      <p>
+        <label htmlFor="retorno">Retorno</label>
+        <input
+          type="date"
+          id="retorno"
+          value={retorno}
+          onChange={({ target }) => setRetorno(target.value)}
+        />
+      </p>
+      <button>Buscar</button>
+    </form>
   );
 }
 
