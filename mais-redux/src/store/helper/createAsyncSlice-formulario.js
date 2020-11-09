@@ -16,8 +16,6 @@ const createAsyncSlice = config => {
       loading: false,
       data: null,
       error: null,
-      lastUpdate: 0,
-      cache: 0,
       ...config.initialState,
     },
     reducers: {
@@ -34,24 +32,18 @@ const createAsyncSlice = config => {
         state.data = null;
         state.error = action.payload;
       },
-      updadeTime(state, action) {
-        state.lastUpdate = action.payload;
-      },
       ...config.reducers,
     },
   });
 
-  const { fetchError, fetchStarted, fetchSuccess, updadeTime } = slice.actions;
+  const { fetchError, fetchStarted, fetchSuccess } = slice.actions;
 
-  const asyncAction = payload => async (dispatch, getState) => {
-    const { lastUpdate, cache } = getState()[slice.name];
-    if (lastUpdate > Date.now() - cache) return;
+  const asyncAction = payload => async dispatch => {
     try {
       dispatch(fetchStarted());
       const { url, options } = config.fetchConfig(payload);
       const response = await fetch(url, options);
       const data = await response.json();
-      dispatch(updadeTime(Date.now()));
       return dispatch(fetchSuccess(data));
     } catch (error) {
       return dispatch(fetchError(error.message));
